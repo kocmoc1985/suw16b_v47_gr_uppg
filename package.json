@@ -1,0 +1,18 @@
+{
+  "name": "suw16b_v47_gr_uppg",
+  "version": "0.0.1",
+  "dependencies": {
+    "body-parser": "*",
+    "cookie-parser": "*",
+    "debug": "*",
+    "express": "*",
+    "compression": "*",
+    "serve-favicon": "*",
+    "gulp": "*",
+    "gulp-less": "*",
+    "gulp-util": "*",
+    "gulp-clean-css": "*",
+    "mysql": "*",
+    "bootstrap": "*"
+  }
+}
