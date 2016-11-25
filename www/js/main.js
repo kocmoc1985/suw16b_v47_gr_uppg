@@ -4,6 +4,10 @@ $(document).ready(function () {
 
 var URL_1 = "templates/toDoListEntry.html";
 
+$(window).resize(function () {
+    
+});
+
 function go() {
     addTodoEntry("Test 1");
     addTodoEntry("Test 2");
