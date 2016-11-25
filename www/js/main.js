@@ -5,6 +5,7 @@ $(document).ready(function () {
 var URL_1 = "templates/toDoListEntry.html";
 
 function go() {
+    addTodoEntry("Test 1");
     addTodoEntry("Test 2");
     addTodoEntry("Test 3");
     addTodoEntry("Test 4");
@@ -26,6 +27,7 @@ function addClickEventAddBtn() {
 }
 
 function addClickEventCheckBoxes() {
+    //
     $(".chkbox").click(function () {
         //
         var todoListEntry = $(this).parent().parent();
