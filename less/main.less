@@ -1,3 +1,18 @@
+.page-header{
+    min-height: 15vh;
+    padding-top: 10px;
+    padding-left: 5px;
+}
+
+.page-header h1{
+    float: left;
+    width: 80%;
+}
+
+.page-header img{
+    float: left;
+}
+
 .todo-list-content{
     min-height: 60vh;
 }
@@ -8,13 +23,19 @@
     word-break: break-all;
     border: 3px solid black !important;
     margin-bottom: 10px;
+    //
+    -moz-border-radius: 0px 10px 10px 10px;
+    -webkit-border-radius: 0px 10px 10px 10px;
+    -khtml-border-radius: 0px 10px 10px 10px;
+    border-radius: 0px 10px 10px 10px;
+    //
 
-    .col-sm-10{
+    .col-sm-8{
         border-right: 3px solid black;
         border-left: 3px solid black;
     }
 
-    .col-sm-1,.col-sm-10{
+    .col-sm-1,.col-sm-8{
         padding: 5px;
         height: 100%;
     }
@@ -32,7 +53,7 @@
         -webkit-transform: scale(2);  
         -o-transform: scale(2);  
     }
-    
+
     .col-sm-1 img{
         height: 90%;
     }
@@ -40,6 +61,16 @@
     .checked{
         text-decoration: line-through;
     }
+    
+    .border-left{
+        border-left: 3px solid black;
+    }
+}
+
+.todo-list-entry:hover{
+    -webkit-box-shadow: 0px 5px 5px 0px #444;
+    -moz-box-shadow: 0px 5px 5px 0px #444;
+    box-shadow: 0px 5px 5px 0px #444;
 }
 /******************************************************************************/
 
@@ -49,6 +80,7 @@
 }
 
 .footer-height-sm{
+    margin-top: 20px;
     min-height: 20vh;
     background-color:@footer-background-color;
 }

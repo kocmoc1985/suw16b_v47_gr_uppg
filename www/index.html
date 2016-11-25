@@ -10,6 +10,7 @@
     </head>
     <body>
         <div class="page-header margin-none">
+            <img src="images/todo-icon.png" alt="todo">
             <h1 class="margin-left-sm">Todo List <small>Fixes it!</small></h1>
         </div>
 
@@ -17,8 +18,8 @@
 
         <div class="container"> 
             <div class="row row-thirty">
-                <div class="col-sm-1 col-sixty">
-                    <a class="btn btn-primary btn-sm" href="#" role="button" id="add-btn">Add</a>
+                <div class="col-xs-4 col-sixty padding-none">
+                    <a class="btn btn-primary btn-sm" href="#" role="button" id="add-btn">Add task</a>
                 </div>
             </div>
         </div>
@@ -31,24 +32,16 @@
                     <div class="col-sm-1">
                         <input class="chkbox" type="checkbox" name="terms"/>
                     </div>
-                    <div class="col-sm-10 todo">
+                    <div class="col-sm-8 todo">
                         Test 1
                     </div>
-                    <div class="col-sm-1 delete">
-                        <img src="images/delete.png">
+                     <div class="col-sm-1 move-down">
+                        <img src="images/arrow-down.png">
                     </div>
-
-                </div>
-
-                <div class="row todo-list-entry">
-
-                    <div class="col-sm-1">
-                        <input class="chkbox" type="checkbox" name="terms"/>
+                    <div class="col-sm-1 move-up border-left">
+                        <img src="images/arrow-up.png">
                     </div>
-                    <div class="col-sm-10 todo">
-                        Test 2
-                    </div>
-                    <div class="col-sm-1 delete">
+                    <div class="col-sm-1 delete border-left">
                         <img src="images/delete.png">
                     </div>
 
@@ -61,7 +54,7 @@
 
         <footer class="footer footer-height-sm">
             <div class="container">
-                <p class="text-muted">Place sticky footer content here.</p>
+                <p class="text-muted"></p>
             </div>
         </footer>
 
