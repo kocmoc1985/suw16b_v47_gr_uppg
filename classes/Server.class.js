@@ -37,10 +37,11 @@ module.exports = class Server {
 
 //==============================================================================
 //==============================================================================
-
- var fs      = require('fs');
+ var fs  = require('fs');
 
 this.app.post('/saveJson', function (req, res) {
+    //
+    var fileName = "taskList.json";
     //
     var param1 = req.body.param1;
     //
@@ -52,11 +53,25 @@ this.app.post('/saveJson', function (req, res) {
     //
     var json = JSON.stringify(entry);
     //
-    fs.writeFile('tasklist.json', json, 'utf8', function(err,data){
-        res.end("Saved!?");
-    });
+    fs.readFile(fileName, 'utf8', function (err, data){
+    if (err){
+         fs.writeFile(fileName, json, 'utf8', function(err,data){
+         res.end("Saved!?");
+         fs.close(2);
+        });
+    } else {
+        var obj = JSON.parse(data); //now it an object
+        obj.table.push({text: param1}); //add some data
+        json = JSON.stringify(obj); //convert it back to json
+        fs.writeFile(fileName, json, 'utf8', function(err, data){
+            res.end("Saved!?");
+            fs.close(2);
+        }); // write it back to disk
+    }
     //
  });
+});
+ 
 //==============================================================================
 //==============================================================================
 

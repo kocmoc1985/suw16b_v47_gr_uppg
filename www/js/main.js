@@ -139,7 +139,6 @@ function addTodoEntry(text, where) {
 }
 
 function addTodoEntryJsonServerSide(text) {
-    alert("Trying to save");
     console.log(updateJson(text));
 }
 
