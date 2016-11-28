@@ -66,14 +66,37 @@ function addClickEventCheckBoxes() {
     });
 }
 
+var todoEntry = null;
+
 function addClickEventDeleteIcon() {
+
+	$('#alert-delete-btn').on('click', function(){
+		if (todoEntry){
+	        $(todoEntry).fadeOut(500, function () {
+	            $(todoEntry).remove();
+	            todoEntry = null;
+	        });
+    	}
+
+	});
 
     // $("#container .delete").click(function () {
     $("#container").on('click', '.delete', function () {
-        var todoEntry = $(this).parent();
-        $(todoEntry).fadeOut(500, function () {
-            $(todoEntry).remove();
-        });
+        todoEntry = $(this).parent();
+    	// console.log(todoEntry);
+
+    	var itemTxt = '';
+    	if (todoEntry.length > 0){
+    		// console.log(todoEntry[0].innerText);
+    		itemTxt = ' "'+todoEntry[0].innerText.trim()+'"';
+    	}
+
+    	$('.alert-danger h4').text('Delete item'+itemTxt+'?');
+
+
+        // $(todoEntry).fadeOut(500, function () {
+        //     $(todoEntry).remove();
+        // });
     });
 }
 
@@ -114,7 +137,7 @@ function addClickEventMoveDown() {
 
 function addTodoEntry(text, where) {
     var todoEntryTemplate = $(loadHtml(URL_1));
-    $(todoEntryTemplate).find(".todo").text(text);
+    $(todoEntryTemplate).find(".todo").text(text.trim());
     if (where == 'before'){
 	    $("#container").prepend(todoEntryTemplate);
 
