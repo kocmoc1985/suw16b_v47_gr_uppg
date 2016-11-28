@@ -13,10 +13,15 @@ $(window).resize(function () {
 function getTasks() {
     //
     var tasksObj = getTaskJson();
+    //
+    if(tasksObj === null){
+        return;
+    }
+    //
     var tasksArr = tasksObj.table;
     //
     for (var i = tasksArr.length - 1; i >= 0; i--) {
-        addTodoEntry(tasksArr[i].text);
+        addTodoEntry(tasksArr[i].text,tasksArr[i].done);
     }
     //
 }
@@ -43,7 +48,8 @@ function addClickEventAddBtn() {
     //
     $('#btn-add-task-done').click(function (event) {
         var val = $('#task-text-input').val();
-        addTodoEntry(val, 'before');
+        addTodoEntry(val,'false', 'before');
+        addTask(val);
     });
 }
 
@@ -56,13 +62,19 @@ function addClickEventCheckBoxes() {
         if ($(this).is(':checked')) {
             //
             $(todoListEntry).fadeOut(500, function () {
+                //
+                toggleDone($(todoListEntry).find(".todo").text(),'true');
+                //
                 $("#container").append($(todoListEntry).detach().fadeIn(500));
                 $(todoListEntry).find(".todo").addClass("checked");
                 //
             });
             //
         } else {
+            //
             $(todoListEntry).find(".todo").removeClass("checked");
+            //
+            toggleDone($(todoListEntry).find(".todo").text(),'false');
         }
     });
 }
@@ -131,13 +143,17 @@ function addClickEventMoveDown() {
 }
 
 
-function addTodoEntry(text, where) {
+function addTodoEntry(text,done, where) {
+    //
     var todoEntryTemplate = $(loadHtml(URL_1));
     $(todoEntryTemplate).find(".todo").text(text.trim());
+    //
+    if(done === 'true'){
+        $(todoEntryTemplate).find(".chkbox").prop('checked', true);
+    }
+    //
     if (where === 'before') {
         $("#container").prepend(todoEntryTemplate);
-        //
-        updateJson(text);
         //
     } else {
         $("#container").append(todoEntryTemplate);
@@ -151,6 +167,10 @@ function getTaskJson() {
         type: "POST",
         url: "http://localhost:3000/" + 'getTodoTasks'
     }).responseText;
+    //
+    if(jsonStr.length === 0){
+        return null;
+    }
     //
     return JSON.parse(jsonStr);
 }
@@ -166,11 +186,22 @@ function deleteTask(text) {
     return jsonStr;
 }
 
-function updateJson(text) {
+function toggleDone(text,done) {
     var jsonStr =  $.ajax({
         async: false, //is true by default
         type: "POST",
-        url: "http://localhost:3000/" + 'saveJson',
+        url: "http://localhost:3000/" + 'toggleDone',
+        data: {param1: text, param2: done}
+    }).responseText;
+    //
+    return jsonStr;
+}
+
+function addTask(text) {
+    var jsonStr =  $.ajax({
+        async: false, //is true by default
+        type: "POST",
+        url: "http://localhost:3000/" + 'addTask',
         data: {param1: text}
     }).responseText;
     //
