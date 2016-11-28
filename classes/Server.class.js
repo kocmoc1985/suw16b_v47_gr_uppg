@@ -38,6 +38,28 @@ module.exports = class Server {
 //==============================================================================
 //==============================================================================
 
+ var fs      = require('fs');
+
+this.app.post('/saveJson', function (req, res) {
+    //
+    var param1 = req.body.param1;
+    //
+    var entry = {
+        table: []
+    };
+    //
+    entry.table.push({text: param1});
+    //
+    var json = JSON.stringify(entry);
+    //
+    fs.writeFile('tasklist.json', json, 'utf8', function(err,data){
+        res.end("Saved!?");
+    });
+    //
+ });
+//==============================================================================
+//==============================================================================
+
 this.app.post('/nodeTest', function (req, res) {
     //
     var param1 = req.body.param1;

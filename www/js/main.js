@@ -3,12 +3,18 @@ $(document).ready(function () {
 });
 
 var URL_1 = "templates/toDoListEntry.html";
+var URL_2 = "templates/deleteModal.html";
+var URL_3 = "templates/addModal.html";
 
 $(window).resize(function () {
 
 });
 
 function go() {
+    //
+    includeHtml(URL_2, "body", "prepend");
+    includeHtml(URL_3, "body", "prepend");
+    //
     addTodoEntry("Test 1");
     addTodoEntry("Test 2");
     addTodoEntry("Test 3");
@@ -25,30 +31,19 @@ function go() {
 }
 
 function addClickEventAddBtn() {
-	$('#gridSystemModalLabel').on('shown.bs.modal', function () {
-	  $('#task-text-input').focus();
-	  // console.log('What?');
-	});
-
-	$('#btn-add-task-done').click(function(event) {
-		/* Act on the event */
-		var val = $('#task-text-input').val();
-		console.log('Yo! --> ', val);
-
-		addTodoEntry(val, 'before');
-
-	    // addClickEventCheckBoxes();
-	    // addClickEventDeleteIcon();
-	    // addClickEventMoveUp();
-	    // addClickEventMoveDown();
-	    // addClickEventAddBtn();
-	});
-
+    //
+    $('#gridSystemModalLabel').on('shown.bs.modal', function () {
+        $('#task-text-input').focus();
+    });
+    //
+    $('#btn-add-task-done').click(function (event) {
+        var val = $('#task-text-input').val();
+        addTodoEntry(val, 'before');
+    });
 }
 
 function addClickEventCheckBoxes() {
     //
-    // $("#container .chkbox").click(function () {
     $("#container").on('click', '.chkbox', function () {
         //
         var todoListEntry = $(this).parent().parent();
@@ -70,33 +65,28 @@ var todoEntry = null;
 
 function addClickEventDeleteIcon() {
 
-	$('#alert-delete-btn').on('click', function(){
-		if (todoEntry){
-	        $(todoEntry).fadeOut(500, function () {
-	            $(todoEntry).remove();
-	            todoEntry = null;
-	        });
-    	}
+    $('#alert-delete-btn').on('click', function () {
+        if (todoEntry) {
+            $(todoEntry).fadeOut(500, function () {
+                $(todoEntry).remove();
+                todoEntry = null;
+            });
+        }
 
-	});
+    });
 
     // $("#container .delete").click(function () {
     $("#container").on('click', '.delete', function () {
         todoEntry = $(this).parent();
-    	// console.log(todoEntry);
 
-    	var itemTxt = '';
-    	if (todoEntry.length > 0){
-    		// console.log(todoEntry[0].innerText);
-    		itemTxt = ' "'+todoEntry[0].innerText.trim()+'"';
-    	}
+        var itemTxt = '';
+        if (todoEntry.length > 0) {
+            // console.log(todoEntry[0].innerText);
+            itemTxt = ' "' + todoEntry[0].innerText.trim() + '"';
+        }
 
-    	$('.alert-danger h4').text('Delete item'+itemTxt+'?');
+        $('.alert-danger h4').text('Delete item' + itemTxt + '?');
 
-
-        // $(todoEntry).fadeOut(500, function () {
-        //     $(todoEntry).remove();
-        // });
     });
 }
 
@@ -138,12 +128,30 @@ function addClickEventMoveDown() {
 function addTodoEntry(text, where) {
     var todoEntryTemplate = $(loadHtml(URL_1));
     $(todoEntryTemplate).find(".todo").text(text.trim());
-    if (where == 'before'){
-	    $("#container").prepend(todoEntryTemplate);
-
+    if (where === 'before') {
+        $("#container").prepend(todoEntryTemplate);
+        //
+        addTodoEntryJsonServerSide(text);
+        //
     } else {
-	    $("#container").append(todoEntryTemplate);
-	}
+        $("#container").append(todoEntryTemplate);
+    }
+}
+
+function addTodoEntryJsonServerSide(text) {
+    alert("Trying to save");
+    console.log(updateJson(text));
+}
+
+function updateJson(text) {
+    var jsonStr =  $.ajax({
+        async: false, //is true by default
+        type: "POST",
+        url: "http://localhost:3000/" + 'saveJson',
+        data: {param1: text}
+    }).responseText;
+    //
+    return jsonStr;
 }
 
 function loadHtml(url) {
@@ -156,4 +164,25 @@ function loadHtml(url) {
     }).responseText;
     //
     return html;
+}
+
+function includeHtml(url, selector, addType) {
+    //
+    var html = $.ajax({
+        url: url,
+        dataType: 'text',
+        async: false
+    }).responseText;
+    //
+    if (addType === "append") {
+        $(selector).append(html);
+    } else if (addType === "prepend") {
+        $(selector).prepend(html);
+    } else if (addType === "after") {
+        $(selector).after(html);
+    } else if (addType === "before") {
+        $(selector).before(html);
+    } else {
+        $(selector).append(html);
+    }
 }
