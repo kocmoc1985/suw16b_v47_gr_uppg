@@ -10,18 +10,30 @@ $(window).resize(function () {
 
 });
 
+function getTasks(){
+    //
+    var tasksObj = getTaskJson();
+    var tasksArr = tasksObj.table;
+    //
+    for (var i = tasksArr.length - 1; i >= 0; i--) {
+         addTodoEntry(tasksArr[i].text);
+    }
+    //
+}
+
 function go() {
     //
     includeHtml(URL_2, "body", "prepend");
     includeHtml(URL_3, "body", "prepend");
     //
-    addTodoEntry("Test 1");
-    addTodoEntry("Test 2");
-    addTodoEntry("Test 3");
-    addTodoEntry("Test 4");
-    addTodoEntry("Test 5");
-    addTodoEntry("Test 6");
-    addTodoEntry("Test 7");
+    getTasks();
+//    addTodoEntry("Test 1");
+//    addTodoEntry("Test 2");
+//    addTodoEntry("Test 3");
+//    addTodoEntry("Test 4");
+//    addTodoEntry("Test 5");
+//    addTodoEntry("Test 6");
+//    addTodoEntry("Test 7");
     //
     addClickEventCheckBoxes();
     addClickEventDeleteIcon();
@@ -64,7 +76,6 @@ function addClickEventCheckBoxes() {
 var todoEntry = null;
 
 function addClickEventDeleteIcon() {
-
     $('#alert-delete-btn').on('click', function () {
         if (todoEntry) {
             $(todoEntry).fadeOut(500, function () {
@@ -131,15 +142,22 @@ function addTodoEntry(text, where) {
     if (where === 'before') {
         $("#container").prepend(todoEntryTemplate);
         //
-        addTodoEntryJsonServerSide(text);
+         updateJson(text);
         //
     } else {
         $("#container").append(todoEntryTemplate);
     }
 }
 
-function addTodoEntryJsonServerSide(text) {
-    console.log(updateJson(text));
+
+function getTaskJson() {
+    var jsonStr =  $.ajax({
+        async: false, //is true by default
+        type: "POST",
+        url: "http://localhost:3000/" + 'getTodoTasks'
+    }).responseText;
+    //
+    return JSON.parse(jsonStr);
 }
 
 function updateJson(text) {

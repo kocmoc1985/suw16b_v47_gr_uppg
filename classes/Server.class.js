@@ -38,10 +38,9 @@ module.exports = class Server {
 //==============================================================================
 //==============================================================================
  var fs  = require('fs');
+ var fileName = "taskList.json";
 
 this.app.post('/saveJson', function (req, res) {
-    //
-    var fileName = "taskList.json";
     //
     var param1 = req.body.param1;
     //
@@ -71,6 +70,19 @@ this.app.post('/saveJson', function (req, res) {
     //
  });
 });
+
+this.app.post('/getTodoTasks', function (req, res) {
+        fs.readFile(fileName, 'utf8', function (err, data){
+            if (err){
+             res.end("");
+             fs.close(2);
+        } else {
+            var json = JSON.parse(data);
+            res.json(json);
+        }
+    });
+});
+ 
  
 //==============================================================================
 //==============================================================================
@@ -85,7 +97,7 @@ this.app.post('/nodeTest', function (req, res) {
     
  //=============================================================================
  
- var mysql      = require('mysql');
+ var mysql   = require('mysql');
  var connectionMySql;
  
 this.app.post('/connectMySql', function (req, res) {
