@@ -18,9 +18,17 @@
     }
 }
 
+.pointer-btn {
+	cursor: pointer
+}
+
+#add-btn {
+    margin: 10px;
+}
 
 .todo-list-content{
     min-height: 60vh;
+    margin: 10px;
 }
 
 .todo-list-entry{
@@ -53,10 +61,21 @@
     .col-xs-1 .chkbox{
         margin-top: 15px;
         margin-left: 10px;
-        -moz-transform: scale(1.5);  
-        -webkit-transform: scale(1.5);  
-        -o-transform: scale(1.5);  
+        -moz-transform: scale(1.5);
+        -webkit-transform: scale(1.5);
+        -o-transform: scale(1.5);
     }
+
+    @media (max-width: 520px){
+	    .col-xs-1 .chkbox{
+	        margin-top: 10px;
+	        margin-left: 0px;
+	        -moz-transform: scale(1);
+	        -webkit-transform: scale(1);
+	        -o-transform: scale(1);
+	    }
+    }
+
 
     .col-xs-1 img{
         height: 5vmin;

@@ -5,7 +5,7 @@ $(document).ready(function () {
 var URL_1 = "templates/toDoListEntry.html";
 
 $(window).resize(function () {
-    
+
 });
 
 function go() {
@@ -25,14 +25,31 @@ function go() {
 }
 
 function addClickEventAddBtn() {
-    $("#add-btn").click(function () {
-        alert("clicked");
-    });
+	$('#gridSystemModalLabel').on('shown.bs.modal', function () {
+	  $('#task-text-input').focus();
+	  // console.log('What?');
+	});
+
+	$('#btn-add-task-done').click(function(event) {
+		/* Act on the event */
+		var val = $('#task-text-input').val();
+		console.log('Yo! --> ', val);
+
+		addTodoEntry(val, 'before');
+
+	    // addClickEventCheckBoxes();
+	    // addClickEventDeleteIcon();
+	    // addClickEventMoveUp();
+	    // addClickEventMoveDown();
+	    // addClickEventAddBtn();
+	});
+
 }
 
 function addClickEventCheckBoxes() {
     //
-    $(".chkbox").click(function () {
+    // $("#container .chkbox").click(function () {
+    $("#container").on('click', '.chkbox', function () {
         //
         var todoListEntry = $(this).parent().parent();
         //
@@ -50,7 +67,9 @@ function addClickEventCheckBoxes() {
 }
 
 function addClickEventDeleteIcon() {
-    $(".delete").click(function () {
+
+    // $("#container .delete").click(function () {
+    $("#container").on('click', '.delete', function () {
         var todoEntry = $(this).parent();
         $(todoEntry).fadeOut(500, function () {
             $(todoEntry).remove();
@@ -59,7 +78,8 @@ function addClickEventDeleteIcon() {
 }
 
 function addClickEventMoveUp() {
-    $(".move-up").click(function () {
+    // $("#container .move-up").click(function () {
+    $("#container").on('click', '.move-up', function () {
         var todoEntry = $(this).parent();
         var prev = $(todoEntry).prev();
 
@@ -75,7 +95,8 @@ function addClickEventMoveUp() {
 }
 
 function addClickEventMoveDown() {
-    $(".move-down").click(function () {
+    // $("#container .move-down").click(function () {
+    $("#container").on('click', '.move-down', function () {
         var todoEntry = $(this).parent();
         var next = $(todoEntry).next();
 
@@ -91,10 +112,15 @@ function addClickEventMoveDown() {
 }
 
 
-function addTodoEntry(text) {
+function addTodoEntry(text, where) {
     var todoEntryTemplate = $(loadHtml(URL_1));
     $(todoEntryTemplate).find(".todo").text(text);
-    $("#container").append(todoEntryTemplate);
+    if (where == 'before'){
+	    $("#container").prepend(todoEntryTemplate);
+
+    } else {
+	    $("#container").append(todoEntryTemplate);
+	}
 }
 
 function loadHtml(url) {
