@@ -10,13 +10,13 @@ $(window).resize(function () {
 
 });
 
-function getTasks(){
+function getTasks() {
     //
     var tasksObj = getTaskJson();
     var tasksArr = tasksObj.table;
     //
     for (var i = tasksArr.length - 1; i >= 0; i--) {
-         addTodoEntry(tasksArr[i].text);
+        addTodoEntry(tasksArr[i].text);
     }
     //
 }
@@ -65,6 +65,7 @@ function addClickEventCheckBoxes() {
             $(todoListEntry).fadeOut(500, function () {
                 $("#container").append($(todoListEntry).detach().fadeIn(500));
                 $(todoListEntry).find(".todo").addClass("checked");
+                //
             });
             //
         } else {
@@ -78,6 +79,9 @@ var todoEntry = null;
 function addClickEventDeleteIcon() {
     $('#alert-delete-btn').on('click', function () {
         if (todoEntry) {
+            //
+            deleteTask(todoEntry[0].innerText.trim());
+            //
             $(todoEntry).fadeOut(500, function () {
                 $(todoEntry).remove();
                 todoEntry = null;
@@ -85,19 +89,18 @@ function addClickEventDeleteIcon() {
         }
 
     });
-
-    // $("#container .delete").click(function () {
+    //
+    //
     $("#container").on('click', '.delete', function () {
         todoEntry = $(this).parent();
-
+        //
         var itemTxt = '';
         if (todoEntry.length > 0) {
-            // console.log(todoEntry[0].innerText);
             itemTxt = ' "' + todoEntry[0].innerText.trim() + '"';
         }
-
+        //
         $('.alert-danger h4').text('Delete item' + itemTxt + '?');
-
+        //
     });
 }
 
@@ -119,7 +122,6 @@ function addClickEventMoveUp() {
 }
 
 function addClickEventMoveDown() {
-    // $("#container .move-down").click(function () {
     $("#container").on('click', '.move-down', function () {
         var todoEntry = $(this).parent();
         var next = $(todoEntry).next();
@@ -142,7 +144,7 @@ function addTodoEntry(text, where) {
     if (where === 'before') {
         $("#container").prepend(todoEntryTemplate);
         //
-         updateJson(text);
+        updateJson(text);
         //
     } else {
         $("#container").append(todoEntryTemplate);
@@ -158,6 +160,17 @@ function getTaskJson() {
     }).responseText;
     //
     return JSON.parse(jsonStr);
+}
+
+function deleteTask(text) {
+    var jsonStr =  $.ajax({
+        async: false, //is true by default
+        type: "POST",
+        url: "http://localhost:3000/" + 'deleteTodoTasks',
+        data: {param1: text}
+    }).responseText;
+    //
+    return jsonStr;
 }
 
 function updateJson(text) {

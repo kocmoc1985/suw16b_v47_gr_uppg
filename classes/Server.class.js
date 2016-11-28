@@ -65,13 +65,14 @@ this.app.post('/saveJson', function (req, res) {
         fs.writeFile(fileName, json, 'utf8', function(err, data){
             res.end("Saved!?");
             fs.close(2);
-        }); // write it back to disk
+        });
     }
     //
  });
 });
 
 this.app.post('/getTodoTasks', function (req, res) {
+    
         fs.readFile(fileName, 'utf8', function (err, data){
             if (err){
              res.end("");
@@ -79,6 +80,28 @@ this.app.post('/getTodoTasks', function (req, res) {
         } else {
             var json = JSON.parse(data);
             res.json(json);
+        }
+    });
+});
+
+this.app.post('/deleteTodoTasks', function (req, res) {
+        //
+        var param1 = req.body.param1;
+        //
+        fs.readFile(fileName, 'utf8', function (err, data){
+            if (err){
+             res.end("");
+             fs.close(2);
+        } else {
+            var obj = JSON.parse(data);
+            var index = obj.table.indexOf(param1);
+            obj.table.splice(index,1);
+            var json = JSON.stringify(obj); //convert it back to json
+            //
+            fs.writeFile(fileName, json, 'utf8', function(err, data){
+                res.end("");
+                fs.close(2);
+          });
         }
     });
 });
