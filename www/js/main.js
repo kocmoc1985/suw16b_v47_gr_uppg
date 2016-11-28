@@ -27,13 +27,6 @@ function go() {
     includeHtml(URL_3, "body", "prepend");
     //
     getTasks();
-//    addTodoEntry("Test 1");
-//    addTodoEntry("Test 2");
-//    addTodoEntry("Test 3");
-//    addTodoEntry("Test 4");
-//    addTodoEntry("Test 5");
-//    addTodoEntry("Test 6");
-//    addTodoEntry("Test 7");
     //
     addClickEventCheckBoxes();
     addClickEventDeleteIcon();
