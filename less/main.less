@@ -19,7 +19,7 @@
 }
 
 .pointer-btn {
-	cursor: pointer
+    cursor: pointer
 }
 
 #add-btn {
@@ -43,8 +43,8 @@
     -khtml-border-radius: 0px 10px 10px 10px;
     border-radius: 0px 10px 10px 10px;
     //
-    .col-xs-8{
-        border-right: 3px solid black;
+    .todo{
+        /*border-right: 3px solid black;*/
         border-left: 3px solid black;
     }
 
@@ -67,15 +67,14 @@
     }
 
     @media (max-width: 520px){
-	    .col-xs-1 .chkbox{
-	        margin-top: 10px;
-	        margin-left: 0px;
-	        -moz-transform: scale(1);
-	        -webkit-transform: scale(1);
-	        -o-transform: scale(1);
-	    }
+        .col-xs-1 .chkbox{
+            margin-top: 10px;
+            margin-left: 0px;
+            -moz-transform: scale(1);
+            -webkit-transform: scale(1);
+            -o-transform: scale(1);
+        }
     }
-
 
     .col-xs-1 img{
         height: 5vmin;
@@ -88,6 +87,15 @@
     .border-left{
         border-left: 3px solid black;
     }
+    
+    .move-down{
+        border-left: 3px solid black;
+    }
+
+    .move-down, .move-up, .delete{
+        display: none;
+    }
+
 }
 
 .todo-list-entry:hover{
