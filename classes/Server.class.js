@@ -95,7 +95,8 @@ this.app.post('/deleteTodoTasks', function (req, res) {
              fs.close(2);
         } else {
             var obj = JSON.parse(data);
-            var index = obj.table[param1];
+            console.log("delete: " + param1);
+            var index = param1;
             obj.table.splice(index,1);
             var json = JSON.stringify(obj); //convert it back to json
             //

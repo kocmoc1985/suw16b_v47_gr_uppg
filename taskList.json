@@ -1,17 +1,5 @@
 {
     "table": [{
-            "index": 0,
-            "text": "Task 1",
-            "done": "false"
-        }, {
-            "index": 1,
-            "text": "Task 2",
-            "done": "false"
-        }, {
-            "index": 2,
-            "text": "Task 3",
-            "done": "false"
-        }, {
             "index": 3,
             "text": "Task 4",
             "done": "false"
