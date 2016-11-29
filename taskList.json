@@ -1,1 +1,1 @@
-{"table":[{"text":"Task 1","done":"false"},{"text":"Task 2","done":"false"},{"text":"Task 1","done":"true"}]}
+{"table":[{"index":0,"text":"Task 1","done":"false"},{"index":1,"text":"Task 2","done":"false"}]}

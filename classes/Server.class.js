@@ -48,7 +48,7 @@ this.app.post('/addTask', function (req, res) {
         table: []
     };
     //
-    entry.table.push({text: param1,done:'false'});
+    entry.table.push({index: 0,text: param1,done:'false'});
     //
     var json = JSON.stringify(entry);
     //
@@ -60,7 +60,8 @@ this.app.post('/addTask', function (req, res) {
         });
     } else {
         var obj = JSON.parse(data); //now it an object
-        obj.table.push({text: param1,done:'false'}); //add some data
+        var index = obj.table.length;
+        obj.table.push({index: index,text: param1,done:'false'}); //add some data
         json = JSON.stringify(obj); //convert it back to json
         fs.writeFile(fileName, json, 'utf8', function(err, data){
             res.end("Saved!?");
@@ -108,8 +109,8 @@ this.app.post('/deleteTodoTasks', function (req, res) {
 
 this.app.post('/toggleDone', function (req, res) {
         //
-        var param1 = req.body.param1;
-        var param2 = req.body.param2;
+        var param1 = req.body.param1; // index
+        var param2 = req.body.param2; // done
         //
         fs.readFile(fileName, 'utf8', function (err, data){
         //
@@ -118,9 +119,7 @@ this.app.post('/toggleDone', function (req, res) {
              fs.close(2);
         } else {
             var obj = JSON.parse(data);
-            var index = obj.table.indexOf(param1);
-            obj.table.splice(index,1);
-            obj.table.push({text: param1,done:param2});
+            obj.table[param1].done = param2;
             var json = JSON.stringify(obj); //convert it back to json
             //
             fs.writeFile(fileName, json, 'utf8', function(err, data){

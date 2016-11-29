@@ -6,22 +6,18 @@ var URL_1 = "templates/toDoListEntry.html";
 var URL_2 = "templates/deleteModal.html";
 var URL_3 = "templates/addModal.html";
 
-$(window).resize(function () {
-
-});
-
 function getTasks() {
     //
     var tasksObj = getTaskJson();
     //
-    if(tasksObj === null){
+    if (tasksObj === null) {
         return;
     }
     //
     var tasksArr = tasksObj.table;
     //
     for (var i = tasksArr.length - 1; i >= 0; i--) {
-        addTodoEntry(tasksArr[i].text,tasksArr[i].done);
+        addTodoEntry(tasksArr[i].index, tasksArr[i].text, tasksArr[i].done);
     }
     //
 }
@@ -38,6 +34,21 @@ function go() {
     addClickEventMoveUp();
     addClickEventMoveDown();
     addClickEventAddBtn();
+    addHoverEventTodoListEntry();
+}
+
+function addHoverEventTodoListEntry() {
+    //
+    $("#container").on("mouseover", ".todo", function () {
+        var parent = $(this).parent();
+        $(parent).find(".controller").fadeIn(600);
+    });
+    //
+    $("#container").on("mouseleave", ".todo-list-entry", function () {
+        var parent = $(this).parent();
+        $(parent).find(".controller").fadeOut(40);
+    });
+    //
 }
 
 function addClickEventAddBtn() {
@@ -47,9 +58,9 @@ function addClickEventAddBtn() {
     });
     //
     $('#btn-add-task-done').click(function (event) {
-        var val = $('#task-text-input').val();
-        addTodoEntry(val,'false', 'before');
-        addTask(val);
+        var text = $('#task-text-input').val();
+        addTodoEntry(-1, text, 'false', 'before');
+        addTask(text);
     });
 }
 
@@ -63,7 +74,7 @@ function addClickEventCheckBoxes() {
             //
             $(todoListEntry).fadeOut(500, function () {
                 //
-                toggleDone($(todoListEntry).find(".todo").text(),'true');
+                toggleDone($(todoListEntry).data("index"), 'true');
                 //
                 $("#container").append($(todoListEntry).detach().fadeIn(500));
                 $(todoListEntry).find(".todo").addClass("checked");
@@ -74,7 +85,7 @@ function addClickEventCheckBoxes() {
             //
             $(todoListEntry).find(".todo").removeClass("checked");
             //
-            toggleDone($(todoListEntry).find(".todo").text(),'false');
+            toggleDone($(todoListEntry).data("index"), 'false');
         }
     });
 }
@@ -110,7 +121,6 @@ function addClickEventDeleteIcon() {
 }
 
 function addClickEventMoveUp() {
-    // $("#container .move-up").click(function () {
     $("#container").on('click', '.move-up', function () {
         var todoEntry = $(this).parent();
         var prev = $(todoEntry).prev();
@@ -143,13 +153,18 @@ function addClickEventMoveDown() {
 }
 
 
-function addTodoEntry(text,done, where) {
+function addTodoEntry(index, text, done, where) {
     //
     var todoEntryTemplate = $(loadHtml(URL_1));
     $(todoEntryTemplate).find(".todo").text(text.trim());
     //
-    if(done === 'true'){
+    if (index !== -1) {
+        $(todoEntryTemplate).data("index", index);
+    }
+    //
+    if (done === 'true') {
         $(todoEntryTemplate).find(".chkbox").prop('checked', true);
+        $(todoEntryTemplate).find(".todo").addClass("checked");
     }
     //
     if (where === 'before') {
@@ -161,52 +176,7 @@ function addTodoEntry(text,done, where) {
 }
 
 
-function getTaskJson() {
-    var jsonStr =  $.ajax({
-        async: false, //is true by default
-        type: "POST",
-        url: "http://localhost:3000/" + 'getTodoTasks'
-    }).responseText;
-    //
-    if(jsonStr.length === 0){
-        return null;
-    }
-    //
-    return JSON.parse(jsonStr);
-}
 
-function deleteTask(text) {
-    var jsonStr =  $.ajax({
-        async: false, //is true by default
-        type: "POST",
-        url: "http://localhost:3000/" + 'deleteTodoTasks',
-        data: {param1: text}
-    }).responseText;
-    //
-    return jsonStr;
-}
-
-function toggleDone(text,done) {
-    var jsonStr =  $.ajax({
-        async: false, //is true by default
-        type: "POST",
-        url: "http://localhost:3000/" + 'toggleDone',
-        data: {param1: text, param2: done}
-    }).responseText;
-    //
-    return jsonStr;
-}
-
-function addTask(text) {
-    var jsonStr =  $.ajax({
-        async: false, //is true by default
-        type: "POST",
-        url: "http://localhost:3000/" + 'addTask',
-        data: {param1: text}
-    }).responseText;
-    //
-    return jsonStr;
-}
 
 function loadHtml(url) {
     //
