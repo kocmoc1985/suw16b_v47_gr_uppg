@@ -12,18 +12,18 @@ function getTaskJson() {
     return JSON.parse(jsonStr);
 }
 
-function deleteTask(text) {
+function deleteTaskBE(index) {
     var jsonStr =  $.ajax({
         async: false, //is true by default
         type: "POST",
         url: "http://localhost:3000/" + 'deleteTodoTasks',
-        data: {param1: text}
+        data: {param1: index}
     }).responseText;
     //
     return jsonStr;
 }
 
-function toggleDone(index,done) {
+function toggleDoneBE(index,done) {
     var jsonStr =  $.ajax({
         async: false, //is true by default
         type: "POST",
@@ -34,7 +34,7 @@ function toggleDone(index,done) {
     return jsonStr;
 }
 
-function addTask(text) {
+function addTaskBE(text) {
     var jsonStr =  $.ajax({
         async: false, //is true by default
         type: "POST",

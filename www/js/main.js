@@ -60,7 +60,7 @@ function addClickEventAddBtn() {
     $('#btn-add-task-done').click(function (event) {
         var text = $('#task-text-input').val();
         addTodoEntry(-1, text, 'false', 'before');
-        addTask(text);
+        addTaskBE(text);
     });
 }
 
@@ -74,7 +74,7 @@ function addClickEventCheckBoxes() {
             //
             $(todoListEntry).fadeOut(500, function () {
                 //
-                toggleDone($(todoListEntry).data("index"), 'true');
+                toggleDoneBE($(todoListEntry).data("index"), 'true');
                 //
                 $("#container").append($(todoListEntry).detach().fadeIn(500));
                 $(todoListEntry).find(".todo").addClass("checked");
@@ -85,7 +85,7 @@ function addClickEventCheckBoxes() {
             //
             $(todoListEntry).find(".todo").removeClass("checked");
             //
-            toggleDone($(todoListEntry).data("index"), 'false');
+            toggleDoneBE($(todoListEntry).data("index"), 'false');
         }
     });
 }
@@ -94,9 +94,10 @@ var todoEntry = null;
 
 function addClickEventDeleteIcon() {
     $('#alert-delete-btn').on('click', function () {
+            //
         if (todoEntry) {
             //
-            deleteTask(todoEntry[0].innerText.trim());
+            deleteTaskBE(todoEntry.data("index"));
             //
             $(todoEntry).fadeOut(500, function () {
                 $(todoEntry).remove();

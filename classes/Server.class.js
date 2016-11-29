@@ -95,7 +95,7 @@ this.app.post('/deleteTodoTasks', function (req, res) {
              fs.close(2);
         } else {
             var obj = JSON.parse(data);
-            var index = obj.table.indexOf(param1);
+            var index = obj.table[param1];
             obj.table.splice(index,1);
             var json = JSON.stringify(obj); //convert it back to json
             //
@@ -119,6 +119,7 @@ this.app.post('/toggleDone', function (req, res) {
              fs.close(2);
         } else {
             var obj = JSON.parse(data);
+            console.log("index: " + param1);
             obj.table[param1].done = param2;
             var json = JSON.stringify(obj); //convert it back to json
             //
