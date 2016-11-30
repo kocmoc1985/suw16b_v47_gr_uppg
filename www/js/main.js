@@ -12,7 +12,7 @@ var FINGER_PRINT;
 function defineFingerPrint() {
     var client = new ClientJS();
     FINGER_PRINT = client.getFingerprint(); // Calculate Device/Browser Fingerprint
-//    alert(FINGER_PRINT);
+    console.log("fingerprint: " + FINGER_PRINT);
 }
 
 function go() {
