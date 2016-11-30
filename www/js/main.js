@@ -7,8 +7,17 @@ var URL_2 = "templates/deleteModal.html";
 var URL_3 = "templates/addModal.html";
 var URL_4 = "templates/deleteAllModal.html";
 
+var FINGER_PRINT;
+
+function defineFingerPrint() {
+    var client = new ClientJS();
+    FINGER_PRINT = client.getFingerprint(); // Calculate Device/Browser Fingerprint
+//    alert(FINGER_PRINT);
+}
 
 function go() {
+    //
+    defineFingerPrint();
     //
     includeHtml(URL_2, "body", "prepend");
     includeHtml(URL_3, "body", "prepend");
@@ -35,7 +44,7 @@ function getTasks() {
     //
     var tasksArr = tasksObj.table;
     //
-    if(tasksArr === undefined){
+    if (tasksArr === undefined) {
         return;
     }
     //
@@ -45,7 +54,7 @@ function getTasks() {
         }
     }
     //
-     for (var i = tasksArr.length - 1; i >= 0; i--) {
+    for (var i = tasksArr.length - 1; i >= 0; i--) {
         if (tasksArr[i].done === 'true') {
             addTodoEntry(tasksArr[i].index, tasksArr[i].text, tasksArr[i].done);
         }
@@ -161,9 +170,9 @@ function addClickEventDeleteIcon() {
 
 function addClickEventDeleteAllBtn() {
     //
-     $('#alert-delete-btn').on('click', function () {
-         deleteAllBE();
-         window.location = window.location; // refresh window
+    $('#alert-delete-btn').on('click', function () {
+        deleteAllBE();
+        window.location = window.location; // refresh window
     });
     //
 }
@@ -204,7 +213,7 @@ function addClickEventMoveDown() {
 function addTodoEntry(index, text, done, where) {
     //
     var todoEntryTemplate = $(loadHtml(URL_1));
-    $(todoEntryTemplate).find(".todo").text(text.trim() + "  / index: " + index);
+    $(todoEntryTemplate).find(".todo").text(text.trim()); // + "  / index: " + index
     //
     if (index !== -1) {
         $(todoEntryTemplate).data("index", index);
