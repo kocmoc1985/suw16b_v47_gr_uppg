@@ -39,11 +39,16 @@ module.exports = class Server {
 //==============================================================================
  var fs  = require('fs');
  var fileName = "taskList.json";
+ 
+ function getFileName(clientId){
+     return "taskList_" + clientId + ".json";
+ }
 
 this.app.post('/addTask', function (req, res) {
     //
     var text = req.body.param1;
     var index = req.body.param2;
+    var clientId = req.body.param3;
     //
     var entry = {
         table: []
@@ -53,9 +58,9 @@ this.app.post('/addTask', function (req, res) {
     //
     var json = JSON.stringify(entry);
     //
-    fs.readFile(fileName, 'utf8', function (err, data){
+    fs.readFile(getFileName(clientId), 'utf8', function (err, data){
     if (err){
-         fs.writeFile(fileName, json, 'utf8', function(err,data){
+         fs.writeFile(getFileName(clientId), json, 'utf8', function(err,data){
          res.end("");
          fs.close(2);
         });
@@ -64,7 +69,7 @@ this.app.post('/addTask', function (req, res) {
 //        var index = obj.table.length;
         obj.table.push({index: index,text: text, done:'false'}); //add some data
         json = JSON.stringify(obj); //convert it back to json
-        fs.writeFile(fileName, json, 'utf8', function(err, data){
+        fs.writeFile(getFileName(clientId), json, 'utf8', function(err, data){
             res.end("");
             fs.close(2);
         });
@@ -74,8 +79,10 @@ this.app.post('/addTask', function (req, res) {
 });
 
 this.app.post('/getTodoTasks', function (req, res) {
-    
-        fs.readFile(fileName, 'utf8', function (err, data){
+        //
+        var clientId = req.body.param1;
+        //
+        fs.readFile(getFileName(clientId), 'utf8', function (err, data){
             if (err){
              res.end("");
              fs.close(2);
@@ -88,7 +95,9 @@ this.app.post('/getTodoTasks', function (req, res) {
 
 this.app.post('/deleteAll', function (req, res) {
     //
-    fs.unlink(fileName,function (){
+    var clientId = req.body.param1;
+    //
+    fs.unlink(getFileName(clientId),function (){
         res.end("");
         fs.close(2);
     });
@@ -98,8 +107,9 @@ this.app.post('/deleteAll', function (req, res) {
 this.app.post('/deleteTodoTasks', function (req, res) {
         //
         var pseudoIndex = req.body.param1;
+        var clientId = req.body.param2;
         //
-        fs.readFile(fileName, 'utf8', function (err, data){
+        fs.readFile(getFileName(clientId), 'utf8', function (err, data){
         //    
         if (err) {
              res.end("");
@@ -113,7 +123,7 @@ this.app.post('/deleteTodoTasks', function (req, res) {
             obj.table.splice(index,1);
             var json = JSON.stringify(obj); //convert it back to json
             //
-            fs.writeFile(fileName, json, 'utf8', function(err, data){
+            fs.writeFile(getFileName(clientId), json, 'utf8', function(err, data){
                 res.end("");
                 fs.close(2);
             });
@@ -139,8 +149,9 @@ this.app.post('/toggleDone', function (req, res) {
         //
         var pseudoIndex = req.body.param1; // index
         var done = req.body.param2; // done
+        var clientId = req.body.param3; // clientId
         //
-        fs.readFile(fileName, 'utf8', function (err, data){
+        fs.readFile(getFileName(clientId), 'utf8', function (err, data){
         //
         if (err){
              res.end("");
@@ -153,7 +164,7 @@ this.app.post('/toggleDone', function (req, res) {
             obj.table[index].done = done;
             var json = JSON.stringify(obj); //convert it back to json
             //
-            fs.writeFile(fileName, json, 'utf8', function(err, data){
+            fs.writeFile(getFileName(clientId), json, 'utf8', function(err, data){
                 res.end("");
                 fs.close(2);
           });

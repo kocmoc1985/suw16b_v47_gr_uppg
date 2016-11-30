@@ -36,7 +36,7 @@ function go() {
 
 function getTasks() {
     //
-    var tasksObj = getTaskJsonBE();
+    var tasksObj = getTaskJsonBE(FINGER_PRINT);
     //
     if (tasksObj === null) {
         return;
@@ -107,7 +107,7 @@ function addClickEventAddBtn() {
         var text = $('#task-text-input').val();
         var index = getPseudoIndex();
         addTodoEntry(index, text, 'false', 'before');
-        addTaskBE(text, index);
+        addTaskBE(text, index,FINGER_PRINT);
     });
 }
 
@@ -121,7 +121,7 @@ function addClickEventCheckBoxes() {
             //
             $(todoListEntry).fadeOut(500, function () {
                 //
-                toggleDoneBE($(todoListEntry).data("index"), 'true');
+                toggleDoneBE($(todoListEntry).data("index"), 'true',FINGER_PRINT);
                 //
                 $("#container").append($(todoListEntry).detach().fadeIn(500));
                 $(todoListEntry).find(".todo").addClass("checked");
@@ -132,7 +132,7 @@ function addClickEventCheckBoxes() {
             //
             $(todoListEntry).find(".todo").removeClass("checked");
             //
-            toggleDoneBE($(todoListEntry).data("index"), 'false');
+            toggleDoneBE($(todoListEntry).data("index"), 'false',FINGER_PRINT);
         }
     });
 }
@@ -144,7 +144,7 @@ function addClickEventDeleteIcon() {
         //
         if (todoEntry) {
             //
-            deleteTaskBE(todoEntry.data("index"));
+            deleteTaskBE(todoEntry.data("index"),FINGER_PRINT);
             //
             $(todoEntry).fadeOut(500, function () {
                 $(todoEntry).remove();
@@ -170,8 +170,8 @@ function addClickEventDeleteIcon() {
 
 function addClickEventDeleteAllBtn() {
     //
-    $('#alert-delete-btn').on('click', function () {
-        deleteAllBE();
+    $('#alert-delete-all-btn').on('click', function () {
+        deleteAllBE(FINGER_PRINT);
         window.location = window.location; // refresh window
     });
     //
