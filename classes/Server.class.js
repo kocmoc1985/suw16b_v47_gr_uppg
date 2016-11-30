@@ -56,7 +56,7 @@ this.app.post('/addTask', function (req, res) {
     fs.readFile(fileName, 'utf8', function (err, data){
     if (err){
          fs.writeFile(fileName, json, 'utf8', function(err,data){
-         res.end("Saved!?");
+         res.end("");
          fs.close(2);
         });
     } else {
@@ -65,7 +65,7 @@ this.app.post('/addTask', function (req, res) {
         obj.table.push({index: index,text: text, done:'false'}); //add some data
         json = JSON.stringify(obj); //convert it back to json
         fs.writeFile(fileName, json, 'utf8', function(err, data){
-            res.end("Saved!?");
+            res.end("");
             fs.close(2);
         });
     }
@@ -118,7 +118,6 @@ function find(obj,pseudoIndex){
     var arr = obj.table;
     //
     for(var i = 0; i < arr.length; i++) {
-        console.log("for: " + arr[i].index);
         if((arr[i].index / 1) ===  (pseudoIndex / 1)){
             return i;
         }
@@ -129,8 +128,8 @@ function find(obj,pseudoIndex){
 
 this.app.post('/toggleDone', function (req, res) {
         //
-        var param1 = req.body.param1; // index
-        var param2 = req.body.param2; // done
+        var pseudoIndex = req.body.param1; // index
+        var done = req.body.param2; // done
         //
         fs.readFile(fileName, 'utf8', function (err, data){
         //
@@ -139,8 +138,10 @@ this.app.post('/toggleDone', function (req, res) {
              fs.close(2);
         } else {
             var obj = JSON.parse(data);
-            console.log("index: " + param1);
-            obj.table[param1].done = param2;
+            //
+            var index = find(obj,pseudoIndex);
+            //
+            obj.table[index].done = done;
             var json = JSON.stringify(obj); //convert it back to json
             //
             fs.writeFile(fileName, json, 'utf8', function(err, data){

@@ -32,8 +32,17 @@ function getTasks() {
     //
     var tasksArr = tasksObj.table;
     //
+    //
     for (var i = tasksArr.length - 1; i >= 0; i--) {
-        addTodoEntry(tasksArr[i].index, tasksArr[i].text, tasksArr[i].done);
+        if (tasksArr[i].done === 'false') {
+            addTodoEntry(tasksArr[i].index, tasksArr[i].text, tasksArr[i].done);
+        }
+    }
+    //
+     for (var i = tasksArr.length - 1; i >= 0; i--) {
+        if (tasksArr[i].done === 'true') {
+            addTodoEntry(tasksArr[i].index, tasksArr[i].text, tasksArr[i].done);
+        }
     }
     //
 }
@@ -45,8 +54,8 @@ function getPseudoIndex() {
     $(".todo-list-entry").each(function () {
         var toDoListEntry = $(this);
         var index = toDoListEntry.data("index");
-        if ((index / 1) > max) {
-            max = index + 1;
+        if ((index / 1) >= max) {
+            max = (index / 1) + 1;
         }
     });
     //
