@@ -38,7 +38,6 @@ module.exports = class Server {
 //==============================================================================
 //==============================================================================
  var fs  = require('fs');
- var fileName = "taskList.json";
  
  function getFileName(clientId){
      return "taskList_" + clientId + ".json";
@@ -66,7 +65,6 @@ this.app.post('/addTask', function (req, res) {
         });
     } else {
         var obj = JSON.parse(data); //now it an object
-//        var index = obj.table.length;
         obj.table.push({index: index,text: text, done:'false'}); //add some data
         json = JSON.stringify(obj); //convert it back to json
         fs.writeFile(getFileName(clientId), json, 'utf8', function(err, data){
@@ -118,8 +116,6 @@ this.app.post('/deleteTodoTasks', function (req, res) {
             //
             var obj = JSON.parse(data);
             var index = find(obj,pseudoIndex);
-            console.log("pseudoIndex: " + pseudoIndex);
-            console.log("found index: " + index);
             obj.table.splice(index,1);
             var json = JSON.stringify(obj); //convert it back to json
             //
