@@ -6,21 +6,6 @@ var URL_1 = "templates/toDoListEntry.html";
 var URL_2 = "templates/deleteModal.html";
 var URL_3 = "templates/addModal.html";
 
-function getTasks() {
-    //
-    var tasksObj = getTaskJson();
-    //
-    if (tasksObj === null) {
-        return;
-    }
-    //
-    var tasksArr = tasksObj.table;
-    //
-    for (var i = tasksArr.length - 1; i >= 0; i--) {
-        addTodoEntry(tasksArr[i].index, tasksArr[i].text, tasksArr[i].done);
-    }
-    //
-}
 
 function go() {
     //
@@ -35,6 +20,41 @@ function go() {
     addClickEventMoveDown();
     addClickEventAddBtn();
     addHoverEventTodoListEntry();
+}
+
+function getTasks() {
+    //
+    var tasksObj = getTaskJsonBE();
+    //
+    if (tasksObj === null) {
+        return;
+    }
+    //
+    var tasksArr = tasksObj.table;
+    //
+    for (var i = tasksArr.length - 1; i >= 0; i--) {
+        addTodoEntry(tasksArr[i].index, tasksArr[i].text, tasksArr[i].done);
+    }
+    //
+}
+
+function getPseudoIndex() {
+    //
+    var max = -1;
+    //
+    $(".todo-list-entry").each(function () {
+        var toDoListEntry = $(this);
+        var index = toDoListEntry.data("index");
+        if ((index / 1) > max) {
+            max = index + 1;
+        }
+    });
+    //
+    if (max === -1) {
+        return 0;
+    } else {
+        return max;
+    }
 }
 
 function addHoverEventTodoListEntry() {
@@ -59,8 +79,9 @@ function addClickEventAddBtn() {
     //
     $('#btn-add-task-done').click(function (event) {
         var text = $('#task-text-input').val();
-        addTodoEntry(-1, text, 'false', 'before');
-        addTaskBE(text);
+        var index = getPseudoIndex();
+        addTodoEntry(index, text, 'false', 'before');
+        addTaskBE(text, index);
     });
 }
 
@@ -94,7 +115,7 @@ var todoEntry = null;
 
 function addClickEventDeleteIcon() {
     $('#alert-delete-btn').on('click', function () {
-            //
+        //
         if (todoEntry) {
             //
             deleteTaskBE(todoEntry.data("index"));
@@ -157,7 +178,7 @@ function addClickEventMoveDown() {
 function addTodoEntry(index, text, done, where) {
     //
     var todoEntryTemplate = $(loadHtml(URL_1));
-    $(todoEntryTemplate).find(".todo").text(text.trim());
+    $(todoEntryTemplate).find(".todo").text(text.trim() + "  / index: " + index);
     //
     if (index !== -1) {
         $(todoEntryTemplate).data("index", index);

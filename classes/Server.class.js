@@ -42,13 +42,14 @@ module.exports = class Server {
 
 this.app.post('/addTask', function (req, res) {
     //
-    var param1 = req.body.param1;
+    var text = req.body.param1;
+    var index = req.body.param2;
     //
     var entry = {
         table: []
     };
     //
-    entry.table.push({index: 0,text: param1,done:'false'});
+    entry.table.push({index: index,text: text,done:'false'});
     //
     var json = JSON.stringify(entry);
     //
@@ -60,8 +61,8 @@ this.app.post('/addTask', function (req, res) {
         });
     } else {
         var obj = JSON.parse(data); //now it an object
-        var index = obj.table.length;
-        obj.table.push({index: index,text: param1,done:'false'}); //add some data
+//        var index = obj.table.length;
+        obj.table.push({index: index,text: text, done:'false'}); //add some data
         json = JSON.stringify(obj); //convert it back to json
         fs.writeFile(fileName, json, 'utf8', function(err, data){
             res.end("Saved!?");
@@ -87,26 +88,44 @@ this.app.post('/getTodoTasks', function (req, res) {
 
 this.app.post('/deleteTodoTasks', function (req, res) {
         //
-        var param1 = req.body.param1;
+        var pseudoIndex = req.body.param1;
         //
         fs.readFile(fileName, 'utf8', function (err, data){
-            if (err){
+        //    
+        if (err) {
              res.end("");
              fs.close(2);
         } else {
+            //
             var obj = JSON.parse(data);
-            console.log("delete: " + param1);
-            var index = param1;
+            var index = find(obj,pseudoIndex);
+            console.log("pseudoIndex: " + pseudoIndex);
+            console.log("found index: " + index);
             obj.table.splice(index,1);
             var json = JSON.stringify(obj); //convert it back to json
             //
             fs.writeFile(fileName, json, 'utf8', function(err, data){
                 res.end("");
                 fs.close(2);
-          });
+            });
+          //
         }
     });
 });
+
+function find(obj,pseudoIndex){
+    //
+    var arr = obj.table;
+    //
+    for(var i = 0; i < arr.length; i++) {
+        console.log("for: " + arr[i].index);
+        if((arr[i].index / 1) ===  (pseudoIndex / 1)){
+            return i;
+        }
+    }
+    //
+    return -1;
+}
 
 this.app.post('/toggleDone', function (req, res) {
         //

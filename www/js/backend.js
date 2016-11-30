@@ -1,4 +1,4 @@
-function getTaskJson() {
+function getTaskJsonBE() {
     var jsonStr =  $.ajax({
         async: false, //is true by default
         type: "POST",
@@ -34,12 +34,12 @@ function toggleDoneBE(index,done) {
     return jsonStr;
 }
 
-function addTaskBE(text) {
+function addTaskBE(text,index) {
     var jsonStr =  $.ajax({
         async: false, //is true by default
         type: "POST",
         url: "http://localhost:3000/" + 'addTask',
-        data: {param1: text}
+        data: {param1: text, param2: index}
     }).responseText;
     //
     return jsonStr;
