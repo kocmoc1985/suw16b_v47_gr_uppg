@@ -86,6 +86,15 @@ this.app.post('/getTodoTasks', function (req, res) {
     });
 });
 
+this.app.post('/deleteAll', function (req, res) {
+    //
+    fs.unlink(fileName,function (){
+        res.end("");
+        fs.close(2);
+    });
+    //
+});
+
 this.app.post('/deleteTodoTasks', function (req, res) {
         //
         var pseudoIndex = req.body.param1;

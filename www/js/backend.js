@@ -12,6 +12,16 @@ function getTaskJsonBE() {
     return JSON.parse(jsonStr);
 }
 
+function deleteAllBE() {
+    var jsonStr =  $.ajax({
+        async: false, //is true by default
+        type: "POST",
+        url: "http://localhost:3000/" + 'deleteAll'
+    }).responseText;
+    //
+    return jsonStr;
+}
+
 function deleteTaskBE(index) {
     var jsonStr =  $.ajax({
         async: false, //is true by default

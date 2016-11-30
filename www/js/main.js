@@ -5,17 +5,20 @@ $(document).ready(function () {
 var URL_1 = "templates/toDoListEntry.html";
 var URL_2 = "templates/deleteModal.html";
 var URL_3 = "templates/addModal.html";
+var URL_4 = "templates/deleteAllModal.html";
 
 
 function go() {
     //
     includeHtml(URL_2, "body", "prepend");
     includeHtml(URL_3, "body", "prepend");
+    includeHtml(URL_4, "body", "prepend");
     //
     getTasks();
     //
     addClickEventCheckBoxes();
     addClickEventDeleteIcon();
+    addClickEventDeleteAllBtn();
     addClickEventMoveUp();
     addClickEventMoveDown();
     addClickEventAddBtn();
@@ -32,6 +35,9 @@ function getTasks() {
     //
     var tasksArr = tasksObj.table;
     //
+    if(tasksArr === undefined){
+        return;
+    }
     //
     for (var i = tasksArr.length - 1; i >= 0; i--) {
         if (tasksArr[i].done === 'false') {
@@ -79,6 +85,8 @@ function addHoverEventTodoListEntry() {
     });
     //
 }
+
+
 
 function addClickEventAddBtn() {
     //
@@ -149,6 +157,15 @@ function addClickEventDeleteIcon() {
         $('.alert-danger h4').text('Delete item' + itemTxt + '?');
         //
     });
+}
+
+function addClickEventDeleteAllBtn() {
+    //
+     $('#alert-delete-btn').on('click', function () {
+         deleteAllBE();
+         window.location = window.location; // refresh window
+    });
+    //
 }
 
 function addClickEventMoveUp() {
